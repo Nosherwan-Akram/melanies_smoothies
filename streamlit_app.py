@@ -45,13 +45,24 @@ if ingredients_list:
 
     my_insert_stmt = """ insert into smoothies.public.orders(ingredients,name_on_order)
             values ('""" + ingredients_string + """','""" + name_on_order + """')"""
+    # time_to_insert = st.button("Submit Order")
+    
+    # if time_to_insert:
+    #     session.sql(my_insert_stmt).collect()
+    #     st.success('Your Smoothie is ordered! ' + name_on_order, icon="✅")
 
+
+    my_order = """ select order_uid as order_id from smoothies.public.orders order by order_ts desc limit 1 """
     # st.write(my_insert_stmt)
     # st.stop()
     time_to_insert = st.button("Submit Order")
     
     if time_to_insert:
-        session.sql(my_insert_stmt).collect()
-        st.success('Your Smoothie is ordered! ' + name_on_order, icon="✅")
-
-
+        for fruit_chosen in ingredients_list:
+            my_update_stmt = """UPDATE smoothies.public.fruit_options SET quantity = quantity - 1 WHERE fruit_name = '""" + fruit_chosen + """';""" 
+            session.sql(my_insert_stmt).collect()
+            st.write(my_update_stmt)
+        # st.stop()
+        session.sql(my_update_stmt).collect()
+        order_submitted = session.sql(my_order).collect()
+        st.success('Hi '+ name_on_order + ', Your ' + str(order_submitted[0]) + ' has been submitted', icon="✅")
