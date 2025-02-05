@@ -60,9 +60,8 @@ if ingredients_list:
     if time_to_insert:
         for fruit_chosen in ingredients_list:
             my_update_stmt = """UPDATE smoothies.public.fruit_options SET quantity = quantity - 1 WHERE fruit_name = '""" + fruit_chosen + """';""" 
-            session.sql(my_insert_stmt).collect()
-            st.write(my_update_stmt)
+            session.sql(my_update_stmt).collect()
         # st.stop()
-        session.sql(my_update_stmt).collect()
+        session.sql(my_insert_stmt).collect()
         order_submitted = session.sql(my_order).collect()
         st.success('Hi '+ name_on_order + ', Your ' + str(order_submitted[0]) + ' has been submitted', icon="✅")
